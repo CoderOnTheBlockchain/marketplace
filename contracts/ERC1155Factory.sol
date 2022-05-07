@@ -5,13 +5,30 @@ import "./ERC1155Token.sol";
 
 contract ERC1155Factory {
 
-    event ERC1155Created(address owner, address tokenContract);
+    event ERC1155Created(address ownerAddress, address contractAddress);
 
-    function deployCollection(string memory _uri) public returns (address) {
+    struct Collection {
+        string name;
+        string artistName;
+        ERC1155Token tokenContract;
+    }
+
+    mapping(address => Collection) collections;
+
+    function deployCollection(string memory _collectionName, string memory _artistName, string memory _uri) public returns (address) {
         ERC1155Token tokenContract = new ERC1155Token(_uri);
+        address addressContract = address(tokenContract);
+        
+        collections[addressContract].name = _collectionName;
+        collections[addressContract].artistName = _artistName;
+        collections[addressContract].tokenContract = tokenContract;
         
         emit ERC1155Created(msg.sender, address(tokenContract));
         
         return address(tokenContract);
+    }
+
+    function getCollection(address _addr) external view returns(Collection memory) {
+        return collections[_addr];
     }
 }
