@@ -18,12 +18,13 @@ contract ERC1155Factory {
     function deployCollection(
         string memory _collectionName,
         string memory _artistName,
+        string memory _uri,
         uint256 _supplyMax
         ) 
         public returns (address) {
 
         ERC1155Token tokenContract = new ERC1155Token();
-        tokenContract.setSupplyMax(_supplyMax);
+        tokenContract.inititialize(_uri, _supplyMax);
         address addressContract = address(tokenContract);
         
         collections[addressContract].name = _collectionName;

@@ -9,26 +9,39 @@ contract ERC1155Token is ERC1155, Ownable {
 
     uint256 private supplyMax;
     uint256 private supplyTotal;
-    string private baseMetadataURI;
-
+    
     constructor() ERC1155("") {}
 
-    function setSupplyMax(uint256 _supplyMax) external onlyOwner {
+    function inititialize(string memory _uri, uint256 _supplyMax) external onlyOwner {
+        _setURI(_uri);
+        setSupplyMax(_supplyMax);
+    }
+
+    function setSupplyMax(uint256 _supplyMax) internal onlyOwner {
         supplyMax = _supplyMax;
     }
 
-    function uri(uint256 _tokenId) public view virtual override returns (string memory) {
-        return string(
-            abi.encodePacked(baseMetadataURI, '/', Strings.toString(_tokenId), ".json")
-        );       
+    function getSupplyMax() public view returns(uint256) {
+        return supplyMax;
     }
 
-    function mint(address _userAddress, uint256 _amount) public payable {
-        require(_userAddress != address(0), "ERC1155: mint to the zero address");
+    function getTokenIdURI(uint256 id) public view virtual returns (string memory) {
+        return string(
+            abi.encodePacked(uri(0), '/', Strings.toString(id), ".json")
+        );
+    }
+
+    function getSupplyTotal() public view returns(uint256) {
+        return supplyTotal;
+    }
+
+    function mint(uint256 _amount) public payable {
+        require(msg.sender != address(0), "ERC1155: mint to the zero address");
         require(supplyMax <= _amount + supplyTotal, string(
             abi.encodePacked('Not enough supply, rest ', supplyMax - supplyTotal)
         ));
 
-        _mint(_userAddress, supplyTotal, _amount, "{name: \'COIN Project\'}");
+        _mint(msg.sender, supplyTotal, _amount, "{name: \'COIN Project\'}");
+        supplyTotal++;
     }
 }
