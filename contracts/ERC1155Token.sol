@@ -10,14 +10,11 @@ contract ERC1155Token is ERC1155, Ownable {
     uint256 private supplyMax;
     uint256 private supplyTotal;
     
-    constructor() ERC1155("") {}
-
-    function inititialize(string memory _uri, uint256 _supplyMax) external onlyOwner {
+    constructor(string memory _uri) ERC1155(_uri) {
         _setURI(_uri);
-        setSupplyMax(_supplyMax);
     }
 
-    function setSupplyMax(uint256 _supplyMax) internal onlyOwner {
+    function setSupplyMax(uint256 _supplyMax) external onlyOwner {
         supplyMax = _supplyMax;
     }
 

@@ -42,14 +42,14 @@ contract ERC1155Factory {
         uint256 _supplyMax
         ) 
         public returns (address) {
-
+ 
         require(bytes(_collectionName).length > 0);
 
         // Update counter
         collectionCount ++;
 
-        ERC1155Token tokenContract = new ERC1155Token();
-        tokenContract.inititialize(_uri, _supplyMax);
+        ERC1155Token tokenContract = new ERC1155Token(_uri);
+        tokenContract.setSupplyMax(_supplyMax);
         address addressContract = address(tokenContract);
         
         collections[addressContract].name = _collectionName;
