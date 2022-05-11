@@ -55,8 +55,7 @@ contract ERC1155Factory {
         collections[addressContract].name = _collectionName;
         collections[addressContract].artistName = _artistName;
         collections[addressContract].tokenContract = tokenContract;
-        collections[addressContract].tokenContract = tokenContract;
-
+        
         collections[addressContract].description = _description;
         collections[addressContract].mediaHash = _mediaHash;
         collections[addressContract].coverHash = _coverHash;
