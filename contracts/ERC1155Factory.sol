@@ -46,6 +46,7 @@ contract ERC1155Factory is ReentrancyGuard {
         tokenContract.setSupplyMax(_supplyMax);
         address addressContract = address(tokenContract);
         
+        collections[addressContract].id = collectionCount;
         collections[addressContract].name = _collectionName;
         collections[addressContract].artistName = _artistName;
         collections[addressContract].tokenContract = tokenContract;
