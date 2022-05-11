@@ -4,15 +4,21 @@ pragma solidity 0.8.13;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract ERC1155Token is ERC1155, Ownable {
+contract ERC1155Token is ERC1155,ERC721URIStorage, Ownable {
+   using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
     uint256 private supplyMax;
     uint256 private supplyTotal;
     
+    /*
     constructor(string memory _uri) ERC1155(_uri) {
         _setURI(_uri);
     }
+    */
 
     function setSupplyMax(uint256 _supplyMax) external onlyOwner {
         supplyMax = _supplyMax;
@@ -32,6 +38,7 @@ contract ERC1155Token is ERC1155, Ownable {
         return supplyTotal;
     }
 
+/*
     function mint(uint256 _amount) public payable {
         require(msg.sender != address(0), "ERC1155: mint to the zero address");
         require(supplyMax <= _amount + supplyTotal, string(
@@ -40,5 +47,21 @@ contract ERC1155Token is ERC1155, Ownable {
 
         _mint(msg.sender, supplyTotal, _amount, "{name: \'COIN Project\'}");
         supplyTotal++;
+    }
+*/
+
+  constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
+
+    function mint(string memory tokenURI)
+        public
+        returns (uint256)
+    {
+        _tokenIds.increment();
+
+        uint256 newItemId = _tokenIds.current();
+        _mint(msg.sender, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+
+        return newItemId;
     }
 }
