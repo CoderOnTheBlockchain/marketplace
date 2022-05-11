@@ -4,6 +4,7 @@ import { header } from 'react-bootstrap';
 import { Link } from '@reach/router';
 import useOnclickOutside from "react-cool-onclickoutside";
 
+import ConnectButton from './ConnectButton';
 
 setDefaultBreakpoints([
   { xs: 0 },
@@ -323,7 +324,7 @@ const Header= function() {
               </BreakpointProvider>
 
               <div className='mainside'>
-                <NavLink to="/wallet" className="btn-main">Connect Wallet</NavLink>
+                <ConnectButton />
               </div>
                   
       </div>
