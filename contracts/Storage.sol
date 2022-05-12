@@ -8,12 +8,11 @@ contract Storage{
     ///@custom:collections pas besoin de getter du coup je l'ai mise en public
     Collection[] public collections;
     struct Collection {
-        uint id;
         string name;
-        string artistName;
+        string symbol;
         simpleNft tokenContract;
-        string description;
         address owner;
+        string baseUri;
     }
 
     /**
@@ -23,16 +22,15 @@ contract Storage{
     //même si Cyril nous a dit que ça poserait pas de soucis, (un peu fait à l'arrache ça serait bien qu'on le modifie)
     */
     function addCollection(
-        uint _id,
         string memory _name,
-        string memory _artistName,
+        string memory _symbol,
         simpleNft _contractAddress,
-        string memory _description,
-        address _owner
+        address _owner,
+        string memory _baseUri
     )external{
         require(collections.length <= 3 gwei, "dos risk, contact admin");
         simpleNft token = simpleNft(_contractAddress);
-        Collection memory tmp = Collection(_id,_name,_artistName,token,_description,_owner);
+        Collection memory tmp = Collection(_name, _symbol, token,_owner, _baseUri);
         collections.push(tmp);
     }
 
